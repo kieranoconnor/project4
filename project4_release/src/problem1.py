@@ -78,7 +78,6 @@ class Agent_QTable(object):
                 break        
             
 
-        print(output)
         return int(output)
 
     #--------------------------
@@ -93,13 +92,20 @@ class Agent_QTable(object):
         #########################################
         ## INSERT YOUR CODE HERE
         #########################################
-        if state in self.Q_table.keys() or random.random() >= 1 -self.epsilon:
+        action = 0
+        if state in self.Q_table.keys() or random.random() >= 1 - self.epsilon:
             action = self.env.action_space.sample()
+            print(action)
             if state not in self.Q_table.keys():
                 self.Q_table[state] = np.zeros((2))
-            return self.Q_table[state]
+            return action
         else:
-            action = 0 if  self.Q_table[state][0] > self.Q_table[state][1] else 1
+            if self.Q_table[state][0] > self.Q_table[state][1]:
+                action = 0
+            else:
+                action = 1
+            print(action)
+        print(action)
         return action
 
     #--------------------------
@@ -117,7 +123,11 @@ class Agent_QTable(object):
         ## INSERT YOUR CODE HERE
         #########################################
         prev_Q = self.Q_table[prev_state]
-        max_Q = prev_Q[0] if prev_Q>prev_Q[1] else prev_Q[1]
+
+        if prev_Q>prev_Q[1]:
+            max_Q = prev_Q[0] 
+        else:
+            max_Q = prev_Q[1]
         up_Q = prev_Q[prev_action] + self.alpha * ((prev_reward + self.gamma * max_Q) - prev_Q[prev_action])
         self.Q_table[prev_state][prev_action] = up_Q
         return up_Q
