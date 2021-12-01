@@ -95,18 +95,13 @@ class Agent_QTable(object):
         action = 0
         if state in self.Q_table.keys() or random.random() >= 1 - self.epsilon:
             action = self.env.action_space.sample()
-            print(action)
+            # print(action)
             if state not in self.Q_table.keys():
                 self.Q_table[state] = np.zeros((2))
             return action
         else:
-            if self.Q_table[state][0] > self.Q_table[state][1]:
-                action = 0
-            else:
-                action = 1
-            print(action)
-        print(action)
-        return action
+            return np.argmax(self.Q_table[state])
+
 
     #--------------------------
     def learn(self, prev_state, prev_action, prev_reward, next_state):
