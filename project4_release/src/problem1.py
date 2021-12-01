@@ -2,7 +2,7 @@
 '''
     Problem 1: Implement Q-learning using a table.
 '''
-
+import gym
 import random
 import pandas as pd
 import numpy as np
@@ -59,8 +59,27 @@ class Agent_QTable(object):
         #########################################
         ## INSERT YOUR CODE HERE
         #########################################
+        output = ""
+        for count, i in enumerate(self.cart_position_bins):
+            if observed_state[0]<i:
+                output+=str(count)
+                break
+        for count, i in enumerate(self.pole_angle_bins):
+            if observed_state[1]<i:
+                output+=str(count)
+                break
+        for count, i in enumerate(self.cart_velocity_bins):
+            if observed_state[2]<i:
+                output+=str(count)
+                break
+        for count, i in enumerate(self.angle_rate_bins):
+            if observed_state[3]<i:
+                output+=str(count)
+                break        
+            
 
-        print(observed_state)
+        print(output)
+        return int(output)
 
     #--------------------------
     def epsilon_greedy(self, state):
@@ -74,6 +93,14 @@ class Agent_QTable(object):
         #########################################
         ## INSERT YOUR CODE HERE
         #########################################
+        if state in self.Q_table.keys() or random.random() >= 1 -self.epsilon:
+            action = self.env.action_space.sample()
+            if state not in self.Q_table.keys():
+                self.Q_table[state] = np.zeros((2))
+            return self.Q_table[state]
+        else:
+            action = 0 if  self.Q_table[state][0] > self.Q_table[state][1] else 1
+        return action
 
     #--------------------------
     def learn(self, prev_state, prev_action, prev_reward, next_state):
@@ -89,3 +116,8 @@ class Agent_QTable(object):
         #########################################
         ## INSERT YOUR CODE HERE
         #########################################
+        prev_Q = self.Q_table[prev_state]
+        max_Q = prev_Q[0] if prev_Q>prev_Q[1] else prev_Q[1]
+        up_Q = prev_Q[prev_action] + self.alpha * ((prev_reward + self.gamma * max_Q) - prev_Q[prev_action])
+        self.Q_table[prev_state][prev_action] = up_Q
+        return up_Q
