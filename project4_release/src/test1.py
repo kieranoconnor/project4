@@ -33,15 +33,18 @@ def test_epsilon_greedy():
     obs = env.reset()
     state = agent.encode_state(obs)
     action = agent.epsilon_greedy(state)
+    # print(action)
     assert action == 0
     agent.Q_table[state] = [0, 1]
     for i in range(10):
         # should generate the same sequence of actions each time the program is run
         action = agent.epsilon_greedy(state)
-        if i == 2:
-            assert action == 0
-        else:
-            assert action == 1
+        # if i == 2:
+        #     assert action == 0
+        # else:
+        #     assert action == 1
+        print(str(i) + ' ' + str(action))
+    assert 1 == 0
 
 # -------------------------------------------------------------------------
 def test_learn():
