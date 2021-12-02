@@ -127,11 +127,12 @@ class Agent_QTable(object):
         ## INSERT YOUR CODE HERE
         #########################################
         prev_Q = self.Q_table[prev_state]
-        # if next_state in self.Q_table.keys():
-        #     max_Q = np.argmax(self.Q_table[next_state])
-        # else:
-        #     max_Q = self.epsilon_greedy(next_state)
-        max_Q = np.argmax(prev_Q)
+        if next_state in self.Q_table.keys():
+            max_Q = np.argmax(self.Q_table[next_state])
+        else:
+            max_Q = self.env.action_space.sample()
+        # max_Q = np.argmax(prev_Q)
         up_Q = prev_Q[prev_action] + self.alpha * ((prev_reward + self.gamma * max_Q) - prev_Q[prev_action])
         self.Q_table[prev_state][prev_action] = up_Q
+        print(up_Q)
         return up_Q
