@@ -91,18 +91,24 @@ class Agent_QTable(object):
         '''
         #########################################
         ## INSERT YOUR CODE HERE
-        #########################################
-        action = 0
-        self.env.seed(21)
-        r = random.random()
-        if state not in self.Q_table.keys() or r < self.epsilon:
-            action = self.env.action_space.sample()
-            
-            if state not in self.Q_table.keys():
-                self.Q_table[state] = np.zeros((2))
-            return action
+        p = random.random()
+        if state not in self.Q_table.keys():
+            self.Q_table[state] = np.zeros((2))
+        if p< self.epsilon:
+            return self.env.action_space.sample()
         else:
-            return np.argmax(self.Q_table[state])
+            return np.argmax(self.Q_table(state))
+        #########################################
+        # action = 0
+        # r = random.random()
+        # if state not in self.Q_table.keys() or r < self.epsilon:
+        #     action = self.env.action_space.sample()
+            
+        #     if state not in self.Q_table.keys():
+        #         self.Q_table[state] = np.zeros((2))
+        #     return action
+        # else:
+        #     return np.argmax(self.Q_table[state])
 
 
     #--------------------------
