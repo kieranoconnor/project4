@@ -92,6 +92,7 @@ class Agent_QTable(object):
         '''
         #########################################
         ## INSERT YOUR CODE HERE
+        self.env.seed(21)
         p = random.random()
         if state not in self.Q_table.keys():
             self.Q_table[state] = [0,0]
@@ -131,7 +132,7 @@ class Agent_QTable(object):
             max_Q = np.argmax(self.Q_table[next_state])
         else:
             max_Q = self.env.action_space.sample()
-        # max_Q = np.argmax(prev_Q)
+        max_Q = np.argmax(prev_Q)
         up_Q = prev_Q[prev_action] + self.alpha * ((prev_reward + self.gamma * max_Q) - prev_Q[prev_action])
         self.Q_table[prev_state][prev_action] = up_Q
         print(up_Q)
