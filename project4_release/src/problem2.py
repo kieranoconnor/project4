@@ -52,7 +52,11 @@ class Agent_QFunction(object):
         if r < self.epsilon:
             return self.env.action_space.sample()
         else:
-            return np.argmax(self.w.T.dot(state))
+            result = self.w.T.dot(state)
+            if result[0] == result[1]:
+                return self.env.action_space.sample()
+
+            return np.argmax(result)
             
             
 
