@@ -95,7 +95,7 @@ class Agent_QTable(object):
         p = random.random()
         if state not in self.Q_table.keys():
             self.Q_table[state] = [0,0]
-        if p< self.epsilon:
+        if p< 1 -self.epsilon:
             return self.env.action_space.sample()
         else:
             return np.argmax(self.Q_table[state])

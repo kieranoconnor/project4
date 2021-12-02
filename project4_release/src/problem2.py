@@ -49,13 +49,12 @@ class Agent_QFunction(object):
         ## INSERT YOUR CODE HERE
         #########################################
         r = random.random() 
-        choice = self.env.action_space.sample()
-        if r < self.epsilon:
-            return choice
+        if r < 1 - self.epsilon:
+            return self.env.action_space.sample()
         else:
             result = self.w.T.dot(state)
             if result[0] == result[1]:
-                return choice
+                return self.env.action_space.sample()
 
             return np.argmax(result)
             
