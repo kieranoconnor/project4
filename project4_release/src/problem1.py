@@ -55,6 +55,7 @@ class Agent_QTable(object):
         :param observed_state: [horizontal_cart_position, cart_velocity, angle_of_pole, angular_velocity],
                                 each dimension is a floating number
         :return an integer (e.g., 1234) representing the observed state.
+         [cart_position, pole_angle, cart_velocity, angle_rate]
         '''
         #########################################
         ## INSERT YOUR CODE HERE
@@ -97,18 +98,18 @@ class Agent_QTable(object):
         if p< self.epsilon:
             return self.env.action_space.sample()
         else:
-            return np.argmax(self.Q_table(state))
+            return np.argmax(self.Q_table[state])
         #########################################
-        # action = 0
-        # r = random.random()
-        # if state not in self.Q_table.keys() or r < self.epsilon:
-        #     action = self.env.action_space.sample()
+        action = 0
+        r = random.random()
+        if state not in self.Q_table.keys() or r < self.epsilon:
+            action = self.env.action_space.sample()
             
-        #     if state not in self.Q_table.keys():
-        #         self.Q_table[state] = np.zeros((2))
-        #     return action
-        # else:
-        #     return np.argmax(self.Q_table[state])
+            if state not in self.Q_table.keys():
+                self.Q_table[state] = np.zeros((2))
+            return action
+        else:
+            return np.argmax(self.Q_table[state])
 
 
     #--------------------------
@@ -126,7 +127,10 @@ class Agent_QTable(object):
         ## INSERT YOUR CODE HERE
         #########################################
         prev_Q = self.Q_table[prev_state]
-        max_Q = np.argmax(self.Q_table[next_state])
+        if next_state in self.Q_table.keys():
+            max_Q = np.argmax(self.Q_table[next_state])
+        else:
+            max_Q = self.epsilon_greedy(next_state)
         up_Q = prev_Q[prev_action] + self.alpha * ((prev_reward + self.gamma * max_Q) - prev_Q[prev_action])
         self.Q_table[prev_state][prev_action] = up_Q
         return up_Q

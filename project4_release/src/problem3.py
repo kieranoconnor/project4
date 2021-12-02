@@ -64,6 +64,17 @@ def q_learning(env, agent, alpha_0=0.9, epsilon_0=1):
         	#########################################
         	## INSERT YOUR CODE HERE
         	#########################################
+            # print(obs)
+            state = agent.encode_state(obs)
+            action = agent.epsilon_greedy(state)
+            obs, reward, done, info =env.step(action)
+            agent.learn(state, action, reward, agent.encode_state(obs))
+            episode_rewards+=reward
+            if done:
+                break
+            
+
+
 
         # record the total reward of this episode
         training_totals.append(episode_rewards)
@@ -73,13 +84,21 @@ def q_learning(env, agent, alpha_0=0.9, epsilon_0=1):
     # start testing: run 100 episodes and apply the learned policy (Q-function) to act on the states.
     agent.epsilon = 0   # only greedy selection and no exploration
     for episode in range(100):
-        env.reset()
+        obs = env.reset()
         episode_rewards = 0
         for step in range(200):        # 200 steps max
             # Each episode runs for a maximal of 200 steps.
         	#########################################
         	## INSERT YOUR CODE HERE
         	#########################################
+            state = agent.encode_state(obs)
+            action = agent.epsilon_greedy(state)
+            obs,reward,done,info = env.step(action)
+            episode_rewards+=reward
+            if done:
+                break
+
+
 
         # record the total reward of this episode
         testing_totals.append(episode_rewards)
