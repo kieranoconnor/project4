@@ -92,7 +92,6 @@ class Agent_QTable(object):
         '''
         #########################################
         ## INSERT YOUR CODE HERE
-        self.env.seed(21)
         p = random.random()
         if state not in self.Q_table.keys():
             self.Q_table[state] = [0,0]
