@@ -3,6 +3,7 @@
     Problem 2: Implement Q-learning using function approximation.
 '''
 
+from os import mkdir
 import random
 import numpy as np
 
@@ -47,6 +48,15 @@ class Agent_QFunction(object):
         #########################################
         ## INSERT YOUR CODE HERE
         #########################################
+        r = random.random() 
+        if r < self.epsilon:
+            return self.env.action_space.sample()
+        else:
+            return np.argmax(self.w.T.dot(state))
+            
+            
+
+
 
     #--------------------------
     def learn(self, prev_state, prev_action, prev_reward, next_state):
@@ -62,3 +72,7 @@ class Agent_QFunction(object):
         #########################################
         ## INSERT YOUR CODE HERE
         #########################################
+
+        # prev_Q = self.Q_table[prev_state]
+        # max_Q = np.argmax(self[next_state])
+        self.w = self.w + self.alpha * ((prev_reward) + self.gamma * self.epsilon_greedy(next_state) - prev_action)* - self.decay * self.w

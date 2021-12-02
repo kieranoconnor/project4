@@ -93,7 +93,7 @@ class Agent_QTable(object):
         ## INSERT YOUR CODE HERE
         p = random.random()
         if state not in self.Q_table.keys():
-            self.Q_table[state] = np.zeros((2))
+            self.Q_table[state] = [0,0]
         if p< self.epsilon:
             return self.env.action_space.sample()
         else:
