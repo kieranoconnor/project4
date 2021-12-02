@@ -94,8 +94,8 @@ class Agent_QTable(object):
         #########################################
         action = 0
         self.env.seed(21)
-
-        if state in self.Q_table.keys() or random.random() >= 1 - self.epsilon:
+        r = random.random()
+        if state in self.Q_table.keys() or r < self.epsilon:
             action = self.env.action_space.sample()
             
             if state not in self.Q_table.keys():
