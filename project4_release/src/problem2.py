@@ -75,4 +75,14 @@ class Agent_QFunction(object):
 
         # prev_Q = self.Q_table[prev_state]
         # max_Q = np.argmax(self[next_state])
-        self.w = self.w + self.alpha * ((prev_reward) + self.gamma * self.epsilon_greedy(next_state) - prev_action)* - self.decay * self.w
+
+        prev_Q = self.w[:,prev_action].T.dot(prev_state)
+        next_Q = self.w[:,prev_action].T.dot(next_state)
+        brackets = self.alpha * (prev_reward + self.gamma * next_Q - prev_Q)
+
+        self.w[:,prev_action] = self.w[:,prev_action] + brackets * prev_state - self.decay * self.w[prev_action]
+
+
+
+        return self.w[:,prev_action]
+    
