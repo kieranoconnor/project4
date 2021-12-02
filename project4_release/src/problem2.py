@@ -80,7 +80,7 @@ class Agent_QFunction(object):
         next_Q = self.w[:,prev_action].T.dot(next_state)
         brackets = self.alpha * (prev_reward + self.gamma * next_Q - prev_Q)
 
-        self.w[:,prev_action] = self.w[:,prev_action] + brackets * prev_state - self.decay * self.w[prev_action]
+        self.w[:,prev_action] = self.w[:,prev_action] + brackets * prev_state - self.decay * self.w[:,prev_action]
 
 
 
