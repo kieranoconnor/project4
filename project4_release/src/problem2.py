@@ -49,7 +49,8 @@ class Agent_QFunction(object):
         ## INSERT YOUR CODE HERE
         #########################################
         r = random.random() 
-        if r < 1 - self.epsilon:
+        if r <self.epsilon:
+
             return self.env.action_space.sample()
         else:
             result = self.w.T.dot(state)
